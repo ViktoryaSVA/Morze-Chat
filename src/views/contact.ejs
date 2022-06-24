@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('components/head'); %>
+</head>
+
+<body class="container">
+
+<header>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/">Login</a>
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="/registration">Registration</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/contact">Morze Chat</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+<div class="row">
+  <div class="col-sm-8">
+    <h1>Send a message </h1>
+
+    <div class="jumbotron">
+      <%- include('components/form'); %>
+
+    </div>
+  </div>
+
+  <div class="col-sm-4">
+      <%- include('components/sidebar.ejs'); %>
+  </div>
+</div>
+</main>
+
+<footer>
+  <%- include('components/footer'); %>
+</footer>
+<script src="/socket.io/socket.io.js"></script>
+  <script>
+    $(function() {
+      let socket = io.connect();
+    });
+  </script>
+</body>
+</html>
