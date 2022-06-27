@@ -1,5 +1,5 @@
 # Morze-Chat
-To start the project, please, run the command - npm run dev.
+## To start the project, please, run the command - npm run dev.
 
 You must register to have chat access.
 
