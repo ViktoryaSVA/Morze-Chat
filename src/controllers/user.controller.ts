@@ -7,40 +7,6 @@ mongoose.connect(`mongodb://localhost:27017/${process.env.MONGODB_DB}`);
 
 const User = mongoose.model("User", userScheme);
 
-const registerUser = function(req: any, res: any, UserInterface: UserInterface) {
-
-    UserInterface.login = req.body.login;
-    UserInterface.email = req.body.email;
-    UserInterface.password = req.body.password;
-    UserInterface.permissionLevel = req.body.permissionLevel;
-    UserInterface.token = CryptoJS.AES.encrypt(UserInterface.password, `${process.env.SECRET_KEY}`).toString();
-
-    try {
-        const user =  new User({
-            login: UserInterface.login,
-            email: UserInterface.email,
-            password: UserInterface.token,
-            registerDate: Date.now(),
-            permissionLevel: UserInterface.permissionLevel,
-        })
-
-        user.save(function(){
-            mongoose.disconnect();
-            console.log("Сохранен объект", user);
-        });
-
-        res.render('index.ejs', {
-            data: {},
-            errors: {}
-        })
-    } catch (err) {
-        res.send({
-            status: '500' ,
-            data: err
-        });
-    }
-}
-
 const loginUser = function (req: any, res: any, UserInterface: UserInterface) {
 
     UserInterface.login = req.body.login;
@@ -79,10 +45,6 @@ const loginUser = function (req: any, res: any, UserInterface: UserInterface) {
                         data: {},
                         errors: {}
                     })
-                    // res.send({
-                    //     status: '200' ,
-                    //     data: {token: el.password, permissionLevel: el.permissionLevel}
-                    // });
                 }
 
             } else{
@@ -95,6 +57,42 @@ const loginUser = function (req: any, res: any, UserInterface: UserInterface) {
     }
 }
 
+const registerUser = function(req: any, res: any, UserInterface: UserInterface) {
+
+    UserInterface.login = req.body.login;
+    UserInterface.email = req.body.email;
+    UserInterface.password = req.body.password;
+    UserInterface.permissionLevel = req.body.permissionLevel;
+    UserInterface.token = CryptoJS.AES.encrypt(UserInterface.password, `${process.env.SECRET_KEY}`).toString();
+
+    try {
+        const user =  new User({
+            login: UserInterface.login,
+            email: UserInterface.email,
+            password: UserInterface.token,
+            registerDate: Date.now(),
+            permissionLevel: UserInterface.permissionLevel,
+        })
+
+        user.save(function(){
+            // mongoose.disconnect();
+            console.log("Сохранен объект", user);
+        });
+
+        res.render('index.ejs', {
+            data: {},
+            errors: {}
+        })
+    } catch (err) {
+        res.send({
+            status: '500' ,
+            data: err
+        });
+    }
+}
+
+
+
 const getUsers = function (req: any, res: any) {
     User.find({}, function (err: any, users: any){
         res.send({
@@ -103,6 +101,7 @@ const getUsers = function (req: any, res: any) {
         });
     })
 }
+
 
 module.exports = {
     registerUser,

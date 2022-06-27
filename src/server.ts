@@ -42,6 +42,10 @@ io.sockets.on('connection', function(socket: any) {
   console.log("Connected");
   connections.push(socket);
 
+  socket.on('join', () => {
+    socket.join('room1');
+  })
+
   socket.on('disconnect', function(data: any) {
     connections.splice(connections.indexOf(socket), 1);
     console.log("Disconnected");
@@ -60,4 +64,8 @@ httpServer.listen(PORT, () => console.log(`The server is running on port ${PORT}
 
 module.exports = {
     httpServer
+}
+
+function fetchUserId(socket: any) {
+  throw new Error('Function not implemented.');
 }
