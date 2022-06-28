@@ -3,7 +3,7 @@
 ## 1) npm install
 ## 2) create file .env with next settings:
 ``` JavaScript
-PORT = 3060
+PORT = 'port'
 MONGODB_DB = 'your_db'
 SECRET_KEY = 'your_secret_key'
 MONGO_USER = 'your_user'
