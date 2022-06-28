@@ -3,6 +3,9 @@
         <label class="text_message" for="name">Name</label>
         <input type="text" name="name" id="name" placeholder="Your name" class="form-control">
         <br>
+        <label class="text_message" for="permissionLevel">Level</label>
+        <input type="text" name="permissionLevel" id="permissionLevel" placeholder="Your permission level" class="form-control">
+        <br>
         <label class="text_message" for="message">Message</label>
         <div class="form-field">
           <textarea name="message" id="message" class="form-control" placeholder="Your message"></textarea>
@@ -43,17 +46,18 @@
     var socket = io.connect();
     var $form = $("#messForm");
     var $name = $("#name"); 
+    var $permissionLevel = $("#permissionLevel");
     var $textarea = $("#message");
     var $all_messages = $("#all_mess");
 
     $form.submit(function(event) {
       event.preventDefault();
-      socket.emit('send mess', {mess: $textarea.val(), name: $name.val(), className: alertClass});
+      socket.emit('send mess', {mess: $textarea.val(), name: $name.val(), permissionLevel: $permissionLevel.val(), className: alertClass});
       $textarea.val('');
     });
 
     socket.on('add mess', function(data) {
-      $all_messages.append("<div class='alert alert-" + data.className + "'><b>" + data.name + "</b>: " + data.mess + "</div>");
+      $all_messages.append("<div class='alert alert-" + data.className + "'><b>" + data.name + "</b>: " + data.mess  + "</div>");
     });
 
   });

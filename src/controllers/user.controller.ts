@@ -1,17 +1,24 @@
 import mongoose from "mongoose";
 import CryptoJS from "crypto-js"
 import { UserInterface } from '../interfaces/user.interface';
+const translatorBOT = require('../service/app');
+const { qwertyArray } = require('../service/keyBoard');
 
 const { userScheme } = require('../models/user.model');
-mongoose.connect(`mongodb://localhost:27017/${process.env.MONGODB_DB}`);
+// mongoose.connect(`mongodb://localhost:27017/${process.env.MONGODB_DB}`);
+mongoose.connect(`mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@cluster0.isy6zdz.mongodb.net/test`);
 
 const User = mongoose.model("User", userScheme);
+
+let permissionLevel: Array<string> = [];
 
 const loginUser = function (req: any, res: any, UserInterface: UserInterface) {
 
     UserInterface.login = req.body.login;
     UserInterface.password = req.body.password;
     UserInterface.email = req.body.email;
+
+    permissionLevel.push(req.body.permissionLevel);
 
     if (UserInterface.login) {
         User.find({login:UserInterface.login})
@@ -53,11 +60,14 @@ const loginUser = function (req: any, res: any, UserInterface: UserInterface) {
                     data: 'User is not authorized'
                 });
             }
+            
         })
     }
+
+
 }
 
-const registerUser = function(req: any, res: any, UserInterface: UserInterface) {
+const registerUser = function (req: any, res: any, UserInterface: UserInterface) {
 
     UserInterface.login = req.body.login;
     UserInterface.email = req.body.email;
@@ -91,8 +101,6 @@ const registerUser = function(req: any, res: any, UserInterface: UserInterface) 
     }
 }
 
-
-
 const getUsers = function (req: any, res: any) {
     User.find({}, function (err: any, users: any){
         res.send({
@@ -102,9 +110,24 @@ const getUsers = function (req: any, res: any) {
     })
 }
 
+const getRegistration = function (req: any, res: any) {
+    res.render('registration.ejs', {
+        data: {},
+        errors: {}
+    })
+} 
+
+const getData = function (req: any, res: any) {
+    res.render('index.ejs', {
+      data: req.body,
+      errors: {}
+    });
+}
 
 module.exports = {
     registerUser,
     loginUser,
-    getUsers
+    getUsers,
+    getRegistration,
+    getData,
 }

@@ -8,6 +8,7 @@ require('dotenv').config()
 
 const routes = require('./routes/route');
 const translatorBOT = require('./service/app');
+const validateLevel = require('./controllers/user.controller');
 const { qwertyArray } = require('./service/keyBoard');
 
 const router: Express = express();
@@ -52,8 +53,14 @@ io.sockets.on('connection', function(socket: any) {
   });
 
   socket.on('send mess', function(data: any) {
-    io.sockets.emit('add mess', {mess: data.mess, name: data.name, className: data.className});
-    translatorBOT(qwertyArray, data.mess);
+    if (data.permissionLevel == 'newby') {
+      let result = translatorBOT(qwertyArray, data.mess);
+      io.sockets.emit('add mess', {mess: result, name: data.name, permissionLevel: data.permissionLevel, className: data.className});
+    } else {
+      io.sockets.emit('add mess', {mess: data.mess, name: data.name, className: data.className});
+    }
+
+
 
   });
 
@@ -66,6 +73,3 @@ module.exports = {
     httpServer
 }
 
-function fetchUserId(socket: any) {
-  throw new Error('Function not implemented.');
-}

@@ -10,7 +10,6 @@ module.exports = (qwertyArray, message) => {
     const testBuff = [];
     newUserMessage.forEach((element) => {
         if (morzeWorlds.includes(element)){
-            console.log('It is morze text');
             for (key in qwertyArray){
                 let value = qwertyArray[key];
                 if (element == value) {
@@ -20,12 +19,13 @@ module.exports = (qwertyArray, message) => {
             }
             
         } else {
-        
-            console.log('ERROR');
-        
+            console.error('ERROR');
         }
 
-    })    
-    console.log(testBuff.toString());
+    })  
+    const result = testBuff.join('');
+    console.log(testBuff.join(''));
+
+    return result;
 
 };

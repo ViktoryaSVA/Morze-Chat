@@ -12,6 +12,11 @@
             <% if (errors.login) { %>
               <div class="error"><%= errors.login.msg %></div>
             <% } %>
+            <label for="permissionLevel">Level</label>
+            <input class="login-input" id="permissionLevel" name="permissionLevel" type="permissionLevel" value="<%= data.permissionLevel %>" />
+            <% if (errors.permissionLevel) { %>
+              <div class="error"><%= errors.permissionLevel.msg %></div>
+            <% } %>
             <label for="password">Password</label>
             <input class="password-input" id="password" name="password" type="password" value="<%= data.password %>" />
             <% if (errors.password) { %>

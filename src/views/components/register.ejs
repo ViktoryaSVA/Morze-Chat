@@ -21,6 +21,13 @@
                       <div class="error"><%= errors.email.msg %></div>
                     <% } %>
                 </div>
+                <div class="form-field <%= errors.permissionLevel ? 'form-field-invalid' : '' %>">
+                  <label class="permissionLevel" for="permissionLevel">Role</label>
+                  <input class="email-input" id="permissionLevel" name="permissionLevel" type="permissionLevel" value="<%= data.permissionLevel %>" />
+                  <% if (errors.permissionLevel) { %>
+                    <div class="error"><%= errors.permissionLevel.msg %></div>
+                  <% } %>
+                </div>
                 <div class="form-field <%= errors.password ? 'form-field-invalid' : '' %>">
                     <label class="password" for="password">Password</label>
                     <input class="password-input" id="password" name="password" type="password" value="<%= data.password %>" />
