@@ -37,32 +37,47 @@ router.use((req, res) => {
   
 const httpServer = http.createServer(router);
 
-var io = require('socket.io')(httpServer);
+let io = require('socket.io')(httpServer);
+let count = 0;
+let room = "abc123";
 
 io.sockets.on('connection', function(socket: any) {
   console.log("Connected");
   connections.push(socket);
 
-  socket.on('join', () => {
-    socket.join('room1');
-  })
-
+  socket.on('create', function (room:any) {
+    count += 1;
+    if (count == 1){
+      socket.join(room);
+      console.log('One user');
+      socket.emit('created', room);
+    } else if (count == 2) {
+      io.sockets.in(room).emit('join', room);
+      console.log('Two users');
+      socket.join(room);
+      socket.emit('joined', room);
+    } else {
+      socket.emit('full', room);
+    }
+  });
+  
   socket.on('disconnect', function(data: any) {
     connections.splice(connections.indexOf(socket), 1);
     console.log("Disconnected");
   });
-
+  
   socket.on('send mess', function(data: any) {
     if (data.permissionLevel == 'newby') {
       let result = translatorBOT(qwertyArray, data.mess);
-      io.sockets.emit('add mess', {mess: result, name: data.name, permissionLevel: data.permissionLevel, className: data.className});
+      io.sockets.in(room).emit('add mess', {mess: result, name: data.name, permissionLevel: data.permissionLevel, className: data.className});
+      // io.sockets.emit('add mess', {mess: result, name: data.name, permissionLevel: data.permissionLevel, className: data.className});
     } else {
-      io.sockets.emit('add mess', {mess: data.mess, name: data.name, className: data.className});
+      io.sockets.in(room).emit('add mess', {mess: data.mess, name: data.name, className: data.className});
+      // io.sockets.emit('add mess', {mess: data.mess, name: data.name, className: data.className});
     }
-
-
-
   });
+
+
 
 });
 
@@ -72,4 +87,3 @@ httpServer.listen(PORT, () => console.log(`The server is running on port ${PORT}
 module.exports = {
     httpServer
 }
-
