@@ -9,6 +9,12 @@ module.exports = (qwertyArray, message) => {
     let num = 0;
     const testBuff = [];
     newUserMessage.forEach((element) => {
+        let checkSpace = element;
+
+        if (checkSpace == '/' || checkSpace == '') {
+            testBuff.push(' ');
+        }
+
         if (morzeWorlds.includes(element)){
             for (key in qwertyArray){
                 let value = qwertyArray[key];
