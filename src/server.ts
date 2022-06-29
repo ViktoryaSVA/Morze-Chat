@@ -6,13 +6,11 @@ import path from 'path';
 
 require('dotenv').config()
 
-const routes = require('./routes/route');
 const translatorBOT = require('./service/app');
-const validateLevel = require('./controllers/user.controller');
 const { qwertyArray } = require('./service/keyBoard');
 
+const routes = require('./routes/route');
 const router: Express = express();
-
 
 let connections: any[] = [];
 
@@ -32,14 +30,14 @@ router.use('/', routes);
 
 router.use((req, res) => {
     res.status(404).send("Sorry can't find that!")
-})
-  
+})  
   
 const httpServer = http.createServer(router);
 
-let io = require('socket.io')(httpServer);
+const io = require('socket.io')(httpServer);
+const room = "abc123";
+
 let count = 0;
-let room = "abc123";
 
 io.sockets.on('connection', function(socket: any) {
   console.log("Connected");
@@ -70,10 +68,8 @@ io.sockets.on('connection', function(socket: any) {
     if (data.permissionLevel == 'newby') {
       let result = translatorBOT(qwertyArray, data.mess);
       io.sockets.in(room).emit('add mess', {mess: result, name: data.name, permissionLevel: data.permissionLevel, className: data.className});
-      // io.sockets.emit('add mess', {mess: result, name: data.name, permissionLevel: data.permissionLevel, className: data.className});
     } else {
       io.sockets.in(room).emit('add mess', {mess: data.mess, name: data.name, className: data.className});
-      // io.sockets.emit('add mess', {mess: data.mess, name: data.name, className: data.className});
     }
   });
 

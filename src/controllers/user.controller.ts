@@ -1,11 +1,8 @@
 import mongoose from "mongoose";
 import CryptoJS from "crypto-js"
 import { UserInterface } from '../interfaces/user.interface';
-const translatorBOT = require('../service/app');
-const { qwertyArray } = require('../service/keyBoard');
 
 const { userScheme } = require('../models/user.model');
-// mongoose.connect(`mongodb://localhost:27017/${process.env.MONGODB_DB}`);
 mongoose.connect(`mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@cluster0.isy6zdz.mongodb.net/test`);
 
 const User = mongoose.model("User", userScheme);
@@ -85,7 +82,6 @@ const registerUser = function (req: any, res: any, UserInterface: UserInterface)
         })
 
         user.save(function(){
-            // mongoose.disconnect();
             console.log("Сохранен объект", user);
         });
 
