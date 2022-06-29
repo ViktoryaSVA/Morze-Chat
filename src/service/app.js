@@ -25,12 +25,12 @@ module.exports = (qwertyArray, message) => {
             }
             
         } else {
-            console.error('ERROR');
+            console.error('Wrong text');
         }
 
     })  
     const result = testBuff.join('');
-    console.log(testBuff.join(''));
+    // console.log(testBuff.join(''));
 
     return result;
 
